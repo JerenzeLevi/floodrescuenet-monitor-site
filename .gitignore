@@ -1,0 +1,18 @@
+# internal notes — not for publication
+feedback.txt
+
+# loose source originals kept locally, not deployed
+/Project Manager.png
+/Project Manager 2.png
+/System Programmer.png
+/Quality Assurance.png
+
+# tooling / scratch
+.playwright-mcp/
+scratch-*
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+node_modules/
+.vercel/

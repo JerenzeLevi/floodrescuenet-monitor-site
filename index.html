@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#03101f" />
+<title>FloodRescueNet Monitor — Detect. Deploy. Rescue.</title>
+<meta name="description" content="FloodRescueNet Monitor is the companion app for an ESP32-based automated flood response system: real-time water-level monitoring, alert history, and remote net-barrier deployment for barangay disaster response teams." />
+<meta property="og:title" content="FloodRescueNet Monitor — Detect. Deploy. Rescue." />
+<meta property="og:description" content="Real-time flood monitoring and automated rescue-net deployment, in your pocket." />
+<meta property="og:type" content="website" />
+<link rel="icon" type="image/png" href="assets/app-icon.png" />
+<link rel="apple-touch-icon" href="assets/app-icon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css?v=9" />
+</head>
+<body>
+
+<!-- ================= PRELOADER / WATER SPLASH ================= -->
+<div id="preloader" aria-hidden="true">
+  <video class="pl-video" src="assets/splash.mp4" autoplay muted playsinline loop preload="auto"></video>
+  <div class="pl-water"><span class="pl-wave"></span></div>
+  <img class="pl-logo" src="assets/app-icon.png" alt="" width="124" height="124" />
+  <span class="pl-badge" aria-hidden="true"><img src="assets/app-icon.png" alt="" width="96" height="96" /></span>
+  <span class="pl-label">FloodRescueNet Monitor<i>loading</i></span>
+</div>
+<script src="js/preloader.js?v=1"></script>
+
+<div class="scroll-progress"><span id="progressBar"></span></div>
+
+<header class="nav" id="nav">
+  <a href="#top" class="brand" aria-label="FloodRescueNet Monitor home">
+    <span class="brand-mark" aria-hidden="true">
+      <img src="assets/app-icon.png" alt="" width="34" height="34" />
+    </span>
+    <span class="brand-text">FLOODRESCUENET<span>MONITOR</span></span>
+  </a>
+  <nav class="nav-links">
+    <a href="#about">Overview</a>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#team">Developers</a>
+    <a href="#support">Support</a>
+  </nav>
+  <a href="privacy.html" class="btn btn-ghost nav-cta" data-magnetic><span class="lbl-full">Privacy Policy</span><span class="lbl-short">Privacy</span></a>
+</header>
+
+<main id="top">
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="hero">
+    <div class="hero-bg">
+      <canvas id="rain"></canvas>
+      <div class="hero-veil"></div>
+    </div>
+    <div class="hero-inner">
+      <span class="eyebrow">System status · Live monitoring</span>
+      <h1 class="hero-title">
+        <span class="line"><span class="w">When</span> <span class="w">the</span> <span class="w">water</span> <span class="w">rises,</span></span>
+        <span class="line grad"><span class="w">the</span> <span class="w">net</span> <span class="w">is</span> <span class="w">already</span> <span class="w">moving.</span></span>
+      </h1>
+      <p class="hero-sub">FloodRescueNet Monitor is the Android companion for an ESP32-based automated flood response system — ultrasonic water-level sensing, a motorized rescue-net barrier, and a live dashboard built for barangay disaster response teams.</p>
+      <div class="hero-cta">
+        <a href="#features" class="btn btn-primary" data-magnetic>Explore the app</a>
+        <a href="#team" class="btn btn-ghost" data-magnetic>Meet the developers</a>
+      </div>
+      <div class="hero-stats">
+        <div><b data-count="3" data-suffix="">0</b><small>alert tiers: Normal · Warning · Danger</small></div>
+        <div><b data-count="24" data-suffix="/7">0</b><small>real-time water-level monitoring</small></div>
+        <div><b data-count="5" data-suffix="s">0</b><small>auto-retract delay after safe</small></div>
+      </div>
+    </div>
+    <div class="scroll-hint" aria-hidden="true"><i></i>scroll to explore</div>
+  </section>
+
+  <!-- ================= ABOUT ================= -->
+  <section class="wrap" id="about">
+    <p class="section-eyebrow">What it is</p>
+    <h2 class="section-title">Monitoring that finally <span class="grad">acts</span>.</h2>
+    <p class="section-lead">Most flood systems only detect and alert. This one closes the loop: the moment the water sensor crosses the danger threshold, the ESP32 drives a motorized net across the channel so anyone swept by the current has something to hold. FloodRescueNet Monitor is the app that lets a response team watch that happen in real time — and step in manually when they need to.</p>
+    <div class="feat-grid">
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3v18M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Purpose-built for responders</h3>
+        <p>Designed for barangay officials and disaster response teams — not the general public. Access is gated to verified accounts per barangay.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M12 7v5l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>Live, not delayed</h3>
+        <p>The ESP32 streams distance readings and system state to Firebase; the app reflects Normal, Warning, or Danger the instant it changes.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2 4 6v6c0 5 3.5 8 8 10 4.5-2 8-5 8-10V6l-8-4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+        <h3>Fail-safe by design</h3>
+        <p>Auto-deploy on danger, auto-retract once the level is safe, and a manual override for the team on the ground.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= FEATURES ================= -->
+  <section class="wrap" id="features">
+    <p class="section-eyebrow">Inside the app</p>
+    <h2 class="section-title">Everything the response team needs on one screen.</h2>
+    <div class="feat-grid">
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M3 14c3 0 3-3 6-3s3 3 6 3 3-3 6-3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>Dashboard</h3>
+        <p>Current water level, live status tier, net position (stored / deployed), and connection health at a glance.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 19V5M4 19h16M8 15l3-4 3 3 5-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <h3>Live Monitoring</h3>
+        <p>A continuously updating readout of sensor distance and threshold state, so the trend is visible before it becomes an emergency.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3 2 20h20L12 3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 9v5M12 17h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>Alerts &amp; History</h3>
+        <p>A timestamped log of every Warning and Danger event and every net deployment, for review and reporting after the flood.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>Manual Deploy</h3>
+        <p>An authenticated control to deploy or retract the net on demand when a responder judges the situation faster than the sensor.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+        <h3>Recent Deployments</h3>
+        <p>The last actuations of the barrier — what triggered them, when, and how long the net stayed out.</p>
+      </article>
+      <article class="feat">
+        <span class="feat-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5c0 9 6 15 15 15v-3.5l-4-2-2 2c-2-1-4-3-5-5l2-2-2-4H4Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span>
+        <h3>Emergency Contacts</h3>
+        <p>Quick-dial numbers for the local rescue chain, kept with the barangay's own configuration.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= HOW IT WORKS ================= -->
+  <section class="wrap" id="how">
+    <p class="section-eyebrow">The loop</p>
+    <h2 class="section-title">Detect → Decide → Deploy → Retract.</h2>
+    <p class="section-lead">A four-step cycle that runs on the hardware itself. The app observes it and can intervene, but the rescue action does not depend on a phone being connected.</p>
+    <div class="steps">
+      <div class="step">
+        <b>01</b>
+        <h3>Detect</h3>
+        <p>An HC-SR04 ultrasonic sensor reads the distance to the water surface many times a second.</p>
+      </div>
+      <div class="step">
+        <b>02</b>
+        <h3>Decide</h3>
+        <p>The ESP32 maps that distance to Normal, Warning, or Danger against calibrated thresholds.</p>
+      </div>
+      <div class="step">
+        <b>03</b>
+        <h3>Deploy</h3>
+        <p>On Danger, the L298N-driven motor winds the net across the channel and the buzzer sounds.</p>
+      </div>
+      <div class="step">
+        <b>04</b>
+        <h3>Retract</h3>
+        <p>Once the level holds below Warning for five seconds, the net is drawn back and the channel reopens.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= TEAM ================= -->
+  <section class="wrap" id="team">
+    <p class="section-eyebrow">Soul Grievers</p>
+    <h2 class="section-title">The people who <span class="grad">built it</span>.</h2>
+    <p class="section-lead">A three-person research team from Saint Columban College, College of Computing Studies, Pagadian City — Application Development and Emerging Technologies track.</p>
+    <div class="team-grid">
+      <article class="member is-deco sp-card">
+        <div class="member-photo"><img src="assets/aenon.png" alt="Aenon John S. Abay" width="480" height="600" loading="lazy" /></div>
+        <div class="member-body">
+          <span class="member-role">System Programmer</span>
+          <h3>Aenon John S. Abay</h3>
+          <p class="tag">App development · Alert integration</p>
+          <ul>
+            <li>Android app screens and navigation flow</li>
+            <li>LED, buzzer, and siren integration on the prototype</li>
+            <li>Firebase read/write wiring for live data</li>
+          </ul>
+        </div>
+        <span class="ornament ornament--drop" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="drpBody" cx="36%" cy="30%" r="78%">
+                <stop offset="0" stop-color="#f0fbff" stop-opacity=".95"/>
+                <stop offset=".38" stop-color="#8fdcf6" stop-opacity=".5"/>
+                <stop offset=".72" stop-color="#2f92c6" stop-opacity=".48"/>
+                <stop offset="1" stop-color="#0c3a57" stop-opacity=".62"/>
+              </radialGradient>
+              <linearGradient id="drpRim" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#dff6ff" stop-opacity=".9"/>
+                <stop offset="1" stop-color="#3aa0d6" stop-opacity=".2"/>
+              </linearGradient>
+              <filter id="drpSh" x="-60%" y="-60%" width="220%" height="220%">
+                <feDropShadow dx="0" dy="2.5" stdDeviation="2.4" flood-color="#03101f" flood-opacity=".5"/>
+              </filter>
+            </defs>
+            <g filter="url(#drpSh)">
+              <path d="M33 9s-16 19.5-16 30a16 16 0 0 0 32 0C49 28.5 33 9 33 9Z" fill="url(#drpBody)" stroke="url(#drpRim)" stroke-width="1.2"/>
+              <ellipse cx="26" cy="30" rx="4.6" ry="7.6" fill="#fff" fill-opacity=".72"/>
+              <ellipse cx="39" cy="45" rx="3" ry="3" fill="#fff" fill-opacity=".3"/>
+              <path d="M22 40a11 11 0 0 0 9 12" stroke="#eafaff" stroke-opacity=".45" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+            </g>
+            <g filter="url(#drpSh)">
+              <path d="M50 13s-6.5 8-6.5 12.4a6.5 6.5 0 0 0 13 0C56.5 21 50 13 50 13Z" fill="url(#drpBody)" stroke="url(#drpRim)" stroke-width="1"/>
+              <ellipse cx="47.5" cy="21" rx="1.8" ry="3" fill="#fff" fill-opacity=".7"/>
+            </g>
+          </svg>
+        </span>
+      </article>
+      <article class="member is-deco pm-card">
+        <div class="member-photo"><img src="assets/jerenze.png" alt="Jerenze Levi T. Omandam" width="480" height="600" loading="lazy" /></div>
+        <div class="member-body">
+          <span class="member-role">Project Manager</span>
+          <h3>Jerenze Levi T. Omandam</h3>
+          <p class="tag">Hardware &amp; firmware lead · Research lead</p>
+          <ul>
+            <li>ESP32 firmware, sensor calibration, motor control</li>
+            <li>System architecture and the Firebase data model</li>
+            <li>Research problem, literature review, oral defense</li>
+          </ul>
+        </div>
+        <span class="ornament ornament--heart" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="hrtBody" cx="34%" cy="26%" r="82%">
+                <stop offset="0" stop-color="#f2fbff" stop-opacity=".95"/>
+                <stop offset=".4" stop-color="#88d6f2" stop-opacity=".5"/>
+                <stop offset=".75" stop-color="#2c8ec2" stop-opacity=".5"/>
+                <stop offset="1" stop-color="#0b3854" stop-opacity=".65"/>
+              </radialGradient>
+              <linearGradient id="hrtRim" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#e2f6ff" stop-opacity=".9"/>
+                <stop offset="1" stop-color="#369cd4" stop-opacity=".22"/>
+              </linearGradient>
+              <filter id="hrtSh" x="-60%" y="-60%" width="220%" height="220%">
+                <feDropShadow dx="0" dy="2.5" stdDeviation="2.6" flood-color="#03101f" flood-opacity=".5"/>
+              </filter>
+            </defs>
+            <g filter="url(#hrtSh)">
+              <path d="M32 52S11 38.5 11 23.5C11 15.9 16.8 11 23.4 11 27.8 11 31 13.4 32 17.2 33 13.4 36.2 11 40.6 11 47.2 11 53 15.9 53 23.5 53 38.5 32 52 32 52Z" fill="url(#hrtBody)" stroke="url(#hrtRim)" stroke-width="1.3"/>
+              <path d="M20 20c-2 3-2.4 7 0 11" stroke="#fff" stroke-opacity=".55" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M25 16.5c-3 1.6-5 4.4-5.6 7.5" stroke="#fff" stroke-opacity=".33" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <path d="M39 39c5.4-4.6 8-10.4 8-15.5" stroke="#bfeaff" stroke-opacity=".3" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+              <ellipse cx="26" cy="22" rx="3.4" ry="5" fill="#fff" fill-opacity=".55" transform="rotate(-20 26 22)"/>
+            </g>
+          </svg>
+        </span>
+      </article>
+      <article class="member is-deco qa-card">
+        <div class="member-photo"><img src="assets/sarah.png" alt="Sarah G. Giamat" width="480" height="600" loading="lazy" /></div>
+        <div class="member-body">
+          <span class="member-role">Quality Assurance</span>
+          <h3>Sarah G. Giamat</h3>
+          <p class="tag">Testing &amp; UX validation</p>
+          <ul>
+            <li>Initial mobile app wireframes and UX review</li>
+            <li>Test planning and defect tracking for the Auth module</li>
+            <li>Regression checks against each release build</li>
+          </ul>
+        </div>
+        <span class="ornament ornament--flower" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="petG" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stop-color="#eef9ff" stop-opacity=".9"/>
+                <stop offset=".55" stop-color="#a6def4" stop-opacity=".55"/>
+                <stop offset="1" stop-color="#2f8dc0" stop-opacity=".42"/>
+              </linearGradient>
+              <radialGradient id="ctrG" cx="40%" cy="36%" r="66%">
+                <stop offset="0" stop-color="#fff6df" stop-opacity=".95"/>
+                <stop offset=".6" stop-color="#ffd98f" stop-opacity=".7"/>
+                <stop offset="1" stop-color="#c98b32" stop-opacity=".5"/>
+              </radialGradient>
+              <filter id="flwSh" x="-60%" y="-60%" width="220%" height="220%">
+                <feDropShadow dx="0" dy="2.5" stdDeviation="2.6" flood-color="#03101f" flood-opacity=".5"/>
+              </filter>
+              <filter id="flwBlur"><feGaussianBlur stdDeviation="2.2"/></filter>
+            </defs>
+            <g filter="url(#flwBlur)" opacity=".45"><circle cx="32" cy="31" r="16" fill="#1f6f9e" fill-opacity=".5"/></g>
+            <g filter="url(#flwSh)">
+              <g fill="url(#petG)" stroke="#dff4ff" stroke-opacity=".4" stroke-width=".8">
+                <path d="M32 31s-5-14 0-21c5 7 0 21 0 21Z"/>
+                <path d="M32 31s-5-14 0-21c5 7 0 21 0 21Z" transform="rotate(72 32 31)"/>
+                <path d="M32 31s-5-14 0-21c5 7 0 21 0 21Z" transform="rotate(144 32 31)"/>
+                <path d="M32 31s-5-14 0-21c5 7 0 21 0 21Z" transform="rotate(216 32 31)"/>
+                <path d="M32 31s-5-14 0-21c5 7 0 21 0 21Z" transform="rotate(288 32 31)"/>
+              </g>
+              <circle cx="32" cy="31" r="5.4" fill="url(#ctrG)"/>
+              <ellipse cx="30" cy="29" rx="1.8" ry="1.2" fill="#fff" fill-opacity=".7"/>
+            </g>
+          </svg>
+        </span>
+      </article>
+    </div>
+  </section>
+
+  <!-- ================= SUPPORT / CTA ================= -->
+  <section class="band" id="support">
+    <canvas id="ctaField"></canvas>
+    <div class="band-inner">
+      <p class="section-eyebrow">Support &amp; legal</p>
+      <h2>Questions, data requests, or a bug to report?</h2>
+      <p class="muted">We respond to every message about the app, your account, or your data — typically within a few days.</p>
+      <div class="contact-row">
+        <a class="pill" href="mailto:omandamjerenze@gmail.com">✉ omandamjerenze@gmail.com</a>
+        <a class="pill" href="privacy.html">Privacy Policy</a>
+        <a class="pill" href="terms.html">Terms &amp; Conditions</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer" id="contact">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-lockup">
+        <span class="brand-mark" aria-hidden="true">
+          <img src="assets/app-icon.png" alt="" width="34" height="34" />
+        </span>
+        <span class="brand-text">FLOODRESCUENET<span>MONITOR</span></span>
+      </div>
+      <p>Companion app for an ESP32-based automated flood response system with ultrasonic sensing and a motorized rescue-net barrier. A research project by Soul Grievers, Saint Columban College.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Site</h4>
+      <a href="#about">Overview</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#team">Developers</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal &amp; support</h4>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms &amp; Conditions</a>
+      <a href="mailto:omandamjerenze@gmail.com">omandamjerenze@gmail.com</a>
+    </div>
+  </div>
+  <div class="footer-base">
+    <span>&copy; <span id="year"></span> Soul Grievers. All rights reserved.</span>
+    <span>Detect. Deploy. Rescue.</span>
+  </div>
+</footer>
+
+<script src="js/vendor/gsap.min.js"></script>
+<script src="js/vendor/ScrollTrigger.min.js"></script>
+<script src="js/main.js?v=2"></script>
+</body>
+</html>
