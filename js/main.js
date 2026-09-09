@@ -37,25 +37,68 @@
   });
 
   /* ---------- hero intro (waits for the water splash to lift) ---------- */
+  const HERO_SEL = [".hero .eyebrow", ".hero-title .w", ".hero-sub", ".hero-cta", ".hero-stats > div", ".scroll-hint"];
+  let heroStarted = false, heroSettled = false;
+
+  function forceHeroVisible() {
+    heroStarted = heroSettled = true;
+    gsap.killTweensOf(HERO_SEL);
+    gsap.set(HERO_SEL, { clearProps: "all" });
+  }
+
+  let heroParallaxMade = false;
+  function heroParallax() {
+    // Must be built only AFTER the splash lifts. While `html.splashing` is up it
+    // forces `.hero-inner{opacity:0}`; if the scrub tween captures 0 as its start
+    // value it becomes 0 -> 0 and the hero stays invisible forever. If we're still
+    // in the splash, wait for the hand-off instead of building now.
+    if (heroParallaxMade || !document.querySelector(".hero-inner")) return;
+    if (document.documentElement.classList.contains("splashing")) {
+      window.addEventListener("site:ready", heroParallax, { once: true });
+      return;
+    }
+    heroParallaxMade = true;
+    gsap.set(".hero-inner", { clearProps: "opacity" });
+    gsap.to(".hero-inner", {
+      yPercent: -8, opacity: 0, ease: "none",
+      scrollTrigger: {
+        trigger: ".hero", start: "top top", end: "bottom top",
+        scrub: true, invalidateOnRefresh: true,
+      },
+    });
+    ScrollTrigger.refresh();
+  }
+
   function heroIntro() {
-    if (RM || !document.querySelector(".hero-title")) return;
-    const tl = gsap.timeline({ defaults: { ease: "expo.out" } });
+    if (heroStarted) return;
+    heroStarted = true;
+    if (RM || !document.querySelector(".hero-title")) { forceHeroVisible(); heroParallax(); return; }
+    const tl = gsap.timeline({
+      defaults: { ease: "expo.out" },
+      onComplete: () => { heroSettled = true; gsap.set(HERO_SEL, { clearProps: "transform" }); },
+    });
     tl.from(".hero .eyebrow", { y: 22, opacity: 0, duration: 0.7 })
       .from(".hero-title .w", { yPercent: 120, opacity: 0, duration: 1.05, stagger: 0.05 }, "-=0.35")
       .from(".hero-sub", { y: 22, opacity: 0, duration: 0.8 }, "-=0.7")
       .from(".hero-cta", { y: 22, opacity: 0, duration: 0.8 }, "-=0.6")
       .from(".hero-stats > div", { y: 18, opacity: 0, duration: 0.7, stagger: 0.09 }, "-=0.6")
       .from(".scroll-hint", { opacity: 0, duration: 0.6 }, "-=0.3");
+    heroParallax();
   }
 
-  if (!RM && document.querySelector(".hero-title")) {
-    if (document.body.classList.contains("preloaded")) heroIntro();
-    else window.addEventListener("site:ready", heroIntro, { once: true });
-
-    gsap.to(".hero-inner", {
-      yPercent: -8, opacity: 0, ease: "none",
-      scrollTrigger: { trigger: ".hero", start: "top top", end: "bottom top", scrub: true },
-    });
+  if (document.querySelector(".hero-title")) {
+    if (RM) {
+      forceHeroVisible();
+      heroParallax();
+    } else if (document.body.classList.contains("preloaded")) {
+      heroIntro();
+    } else {
+      window.addEventListener("site:ready", heroIntro, { once: true });
+      // last-resort failsafes: only if the splash hand-off never happens
+      // (preloader's own hard failsafe fires at 6s, so 7s here means it's truly stuck)
+      setTimeout(() => { if (!heroStarted) heroIntro(); }, 7000);
+      setTimeout(() => { if (!heroSettled) { forceHeroVisible(); heroParallax(); } }, 10000);
+    }
   }
 
   /* ---------- counters ---------- */
