@@ -28,13 +28,14 @@ standalone **Privacy Policy** and **Terms & Conditions** pages, hosted for free 
 linked from the Play Store listing.
 
 It is a plain static site — no framework, no build step, no backend, no database,
-no tracking.
+no tracking. The 3D prototype page runs a local demonstration in the browser.
 
 ## Pages
 
 | Path | Purpose |
 |------|---------|
 | `/` &nbsp;(`index.html`) | Landing — hero, overview, features, how-it-works, developer profiles, support |
+| `/simulator/` | Interactive tabletop 3D demonstration; local state only, no hardware or app connection |
 | `/privacy.html` | Full Privacy Policy (effective 9 September 2026) — the URL given to Google Play Console |
 | `/terms.html` | Terms & Conditions |
 | `/api` | 🦍 Honeypot — see [Security](#security) |
@@ -80,8 +81,9 @@ Open `index.html?keepsplash` to freeze the splash for screenshots.
 
 ## Security
 
-The site is static with no inputs, forms, auth, cookies, or storage, so the attack
-surface is minimal. On top of that, `vercel.json` sets:
+The site is static with no server-side forms, auth, cookies, or storage. The prototype
+page has local simulation controls; they do not transmit readings or commands.
+`vercel.json` sets:
 
 - a strict **Content-Security-Policy** (`script-src 'self'`, `frame-ancestors 'none'`, …)
 - **HSTS** (2-year, preload), `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`
@@ -146,3 +148,14 @@ content, assets, or design — without prior written permission from the copyrig
 holders. Contact **omandamjerenze@gmail.com**.
 
 © 2026 Jerenze Levi T. Omandam and the Soul Grievers research team.
+
+## Tabletop simulator integration
+
+- Open `/simulator/` from the main navigation, hero or footer. `/simulator` also resolves to the same page.
+- Assets are served from `/simulator/` on the same origin using bundled scripts, without an iframe, external scripts or changes to security policy.
+- The homepage and simulator share the Monitor logo, fonts, colors, and desktop/mobile navigation. The prototype link is marked as the current page; the other links lead back to the corresponding homepage section.
+- Uses Three.js r128; its notice and MIT license are in `simulator/THIRD_PARTY_NOTICES.md`.
+- Drag to orbit, use + / − to zoom, inspect components, and raise the simulated water to exercise automatic deployment. Manual mode waits for a button command.
+- The simulator intentionally stays deployed after water falls. Reset represents manual inspection and repacking. This differs from the proposed automatic retract behavior described elsewhere on the marketing site.
+- Android/Firebase integration remains future work: this repository does not contain the mobile app, its authentication configuration or its database contract.
+- Run `node tests/simulator.test.cjs` for route, asset, CSP and state checks. A live browser/Vercel check is still required after publication.
