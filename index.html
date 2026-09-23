@@ -15,6 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css?v=9" />
+<link rel="stylesheet" href="/css/navigation.css?v=1" />
 </head>
 <body>
 
@@ -30,21 +31,21 @@
 
 <div class="scroll-progress"><span id="progressBar"></span></div>
 
-<header class="nav" id="nav">
-  <a href="#top" class="brand" aria-label="FloodRescueNet Monitor home">
-    <span class="brand-mark" aria-hidden="true">
-      <img src="assets/app-icon.png" alt="" width="34" height="34" />
-    </span>
-    <span class="brand-text">FLOODRESCUENET<span>MONITOR</span></span>
-  </a>
-  <nav class="nav-links">
-    <a href="#about">Overview</a>
-    <a href="#features">Features</a>
-    <a href="#how">How it works</a>
-    <a href="#team">Developers</a>
-    <a href="#support">Support</a>
-  </nav>
-  <a href="privacy.html" class="btn btn-ghost nav-cta" data-magnetic><span class="lbl-full">Privacy Policy</span><span class="lbl-short">Privacy</span></a>
+<header class="nav site-nav" id="nav">
+  <a href="/" class="brand" aria-label="FloodRescueNet Monitor home"><span class="brand-mark" aria-hidden="true"><img src="/assets/app-icon.png" alt="" width="34" height="34"></span><span class="brand-text">FLOODRESCUENET<span>MONITOR</span></span></a>
+  <nav class="nav-links" aria-label="Main navigation"><a href="/#about">Overview</a>
+    <a href="/#features">Features</a>
+    <a href="/#how">How it works</a>
+    <a href="/simulator/">3D Prototype</a>
+    <a href="/#team">Developers</a>
+    <a href="/#support">Support</a></nav>
+  <a href="/privacy.html" class="btn btn-ghost nav-cta"><span class="lbl-full">Privacy Policy</span><span class="lbl-short">Privacy</span></a>
+  <details class="mobile-nav" data-mobile-nav><summary>Menu</summary><nav aria-label="Mobile navigation"><a href="/#about">Overview</a>
+    <a href="/#features">Features</a>
+    <a href="/#how">How it works</a>
+    <a href="/simulator/">3D Prototype</a>
+    <a href="/#team">Developers</a>
+    <a href="/#support">Support</a></nav></details>
 </header>
 
 <main id="top">
@@ -64,6 +65,7 @@
       <p class="hero-sub">FloodRescueNet Monitor is the Android companion for an ESP32-based automated flood response system — ultrasonic water-level sensing, a motorized rescue-net barrier, and a live dashboard built for barangay disaster response teams.</p>
       <div class="hero-cta">
         <a href="#features" class="btn btn-primary" data-magnetic>Explore the app</a>
+        <a href="/simulator/" class="btn btn-ghost" data-magnetic>Explore the 3D prototype</a>
         <a href="#team" class="btn btn-ghost" data-magnetic>Meet the developers</a>
       </div>
       <div class="hero-stats">
@@ -333,6 +335,7 @@
       <a href="#about">Overview</a>
       <a href="#features">Features</a>
       <a href="#how">How it works</a>
+      <a href="/simulator/">3D Prototype</a>
       <a href="#team">Developers</a>
     </div>
     <div class="footer-col">
@@ -351,5 +354,6 @@
 <script src="js/vendor/gsap.min.js"></script>
 <script src="js/vendor/ScrollTrigger.min.js"></script>
 <script src="js/main.js?v=6"></script>
+<script src="/js/navigation.js?v=1"></script>
 </body>
 </html>
