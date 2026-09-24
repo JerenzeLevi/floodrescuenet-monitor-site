@@ -17,7 +17,7 @@ try{
  const fill=new T.DirectionalLight(0xdceeff,.68);fill.position.set(60,45,-65);scene.add(fill);
  const rim=new T.DirectionalLight(0xffffff,.45);rim.position.set(-15,30,-65);scene.add(rim);
  const floor=new T.Mesh(new T.PlaneGeometry(1200,1200),new T.MeshStandardMaterial({color:0xe5e9ed,roughness:1}));floor.rotation.x=-Math.PI/2;floor.position.y=-3.45;floor.receiveShadow=true;scene.add(floor);
- const model=PrototypeModel.build(T,scene),sim=new Simulation();
+ const model=PrototypeModel.build(T,scene),sim=new Simulation();window.__sim=sim;
  const presets={
   overview:{target:[0,9,2],yaw:53,pitch:.43,radius:168,min:100,max:225,title:'Complete assembly',number:'01',heading:'A prototype made from familiar materials',text:'Cardboard housings, a clear storage box, blue mesh and kit electronics on a plywood base. Select a component above to take a closer look.'},
   column:{target:[0,24,-23],yaw:41,pitch:.15,radius:68,min:43,max:105,title:'Inside the storage column',number:'02',heading:'Follow the folded net to the outlet',text:'Two walls are removed for this cutaway. The blue mesh folds back and forth on a tray, then feeds upward and over the top chute. Deploy to watch it empty; reset represents a manual repack.'},
